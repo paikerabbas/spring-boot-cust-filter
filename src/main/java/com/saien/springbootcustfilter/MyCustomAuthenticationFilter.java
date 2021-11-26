@@ -31,6 +31,7 @@ public class MyCustomAuthenticationFilter extends OncePerRequestFilter {
 
 		MyCustomAuthentication custAuthentication = new MyCustomAuthentication(authToken, null);
 		try {
+			// below code will call the authenticate() method of AuthenticationProvider
 			Authentication authResult = authenticationManager.authenticate(custAuthentication);
 			if (authResult.isAuthenticated()) {
 				SecurityContextHolder.getContext().setAuthentication(authResult);
