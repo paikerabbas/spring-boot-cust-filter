@@ -13,7 +13,6 @@ public class MyCustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		// TODO Auto-generated method stub
 		String requestKey = authentication.getName();
 		if (requestKey.equals(secretKey)) {
 			MyCustomAuthentication fulluAuthenticated = new MyCustomAuthentication(null, null, null);
@@ -25,7 +24,6 @@ public class MyCustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public boolean supports(Class<?> authentication) {
-		// TODO Auto-generated method stub
 		return MyCustomAuthentication.class.equals(authentication);
 	}
 

@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class ProjectBeanConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private MyCustomAuthenticationFilter myCustomAuthenticationFilter; 
-	
+	private MyCustomAuthenticationFilter myCustomAuthenticationFilter;
+
 	@Autowired
 	private MyCustomAuthenticationProvider myCustomAuthenticationProvider;
 
@@ -24,11 +24,11 @@ public class ProjectBeanConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	 protected void configure(HttpSecurity http) throws Exception {
-		 http.addFilterAt(myCustomAuthenticationFilter, BasicAuthenticationFilter.class);
-		 http.authorizeRequests().anyRequest().permitAll();
-	 }
-	 
+	protected void configure(HttpSecurity http) throws Exception {
+		http.addFilterAt(myCustomAuthenticationFilter, BasicAuthenticationFilter.class);
+		http.authorizeRequests().anyRequest().permitAll();
+	}
+
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
