@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecureUser implements UserDetails{
 
-    private final UserRequest userRequest;
+    private final UserVO userRequest;
 
-    public SecureUser(UserRequest userRequest) {
+    public SecureUser(UserVO userRequest) {
         this.userRequest = userRequest;
     }
 	

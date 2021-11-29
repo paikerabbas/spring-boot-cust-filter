@@ -1,5 +1,7 @@
 package com.saien.springbootcustfilter;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -22,32 +24,44 @@ public class MyCustomAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private DriverManagerDataSource dataSource;
 
-	
-	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String requestKey = authentication.getName();
-		
-		dataSource.setUsername("username");
-		dataSource.setPassword("password");
+		UserVO userinRequest = (UserVO) authentication.getDetails();
+//		.getName();
+
+		dataSource.setUsername(userinRequest.getUsername());
+		dataSource.setPassword(userinRequest.getPassword());
 
 		JdbcUserDetailsManager userManager = new JdbcUserDetailsManager(dataSource);
 
 		JdbcTemplate jdbcTemplate = userManager.getJdbcTemplate();
-		List<UserRequest> users = jdbcTemplate.query("select * from users", (rs, rowNum) -> {
-			UserRequest user = new UserRequest();
+		List<UserVO> users = jdbcTemplate.query("select * from users", (rs, rowNum) -> {
+			UserVO user = new UserVO();
 			user.setUsername(rs.getString("username"));
 			user.setPassword(rs.getString("password"));
 			return user;
 		});
 		users.forEach(System.out::println);
 
-		if (requestKey.equals(secretKey)) {
-			MyCustomAuthentication fulluAuthenticated = new MyCustomAuthentication(null, null, null);
-			return fulluAuthenticated;
-		} else {
-			throw new BadCredentialsException("Header value is not correct");
+		MyCustomAuthentication fulluAuthenticated = null;
+
+		try {
+			Connection connection = dataSource.getConnection();
+			// If connection is successful, means user is authenticated
+			System.out.println("User is authenticated..");
+			fulluAuthenticated = new MyCustomAuthentication(null, null, null);
+
+		} catch (SQLException ex) {
+			throw new BadCredentialsException("User not authenticated.");
 		}
+
+		return fulluAuthenticated;
+//		if (requestKey.equals(secretKey)) {
+//			MyCustomAuthentication fulluAuthenticated = new MyCustomAuthentication(null, null, null);
+//			return fulluAuthenticated;
+//		} else {
+//			throw new BadCredentialsException("Header value is not correct");
+//		}
 	}
 
 	@Override

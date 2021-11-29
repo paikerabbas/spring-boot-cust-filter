@@ -1,6 +1,6 @@
 package com.saien.springbootcustfilter;
 
-public class UserRequest {
+public class UserVO {
 
 	private String username;
 	private String password;
